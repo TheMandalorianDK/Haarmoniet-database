@@ -8,10 +8,11 @@ app.use(express.json());
 app.use(express.static('.'));   // serves your barbershop.html
 
 const pool = mysql.createPool({
-  host:     'localhost',
-  user:     'root',         // your MySQL username
-  password: '8981Dyrbyvej32', // your MySQL password
-  database: 'barbershop',
+  host:     process.env.MYSQLHOST,
+  user:     process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port:     parseInt(process.env.MYSQLPORT || '3306'),
   waitForConnections: true,
 });
 
@@ -193,4 +194,5 @@ app.delete('/api/customers/:id', async (req, res) => {
   res.json({ ok: true });
 });
 
-app.listen(3000, () => console.log('Server kører på http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('Server running on port ' + PORT));
